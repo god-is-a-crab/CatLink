@@ -1,0 +1,35 @@
+# KiCad backup and autosave files
+*.bak
+*.tmp
+*.tmp-bak
+*.save
+*.kicad_sch-bak
+*-rescue.kicad_sch
+*-cache.lib
+*-backups/
+fp-info-cache
+*.lck
+
+# KiCad intermediate/user-specific
+*.kicad_prl
+
+# Output/manufacturing files
+*.gtp
+*.gto
+*.gts
+*.gbl
+*.gbo
+*.gbp
+*.gbs
+*.drl
+*.map
+*.pos
+*.rpt
+*.svg
+*.pdf
+*.zip
+*.step
+*.stp
+
+# 3D model dir (if generated)
+3d/
