@@ -1,0 +1,29 @@
+# KiCad schematic and board files (text-based)
+*.kicad_sch text eol=lf
+*.kicad_pcb text eol=lf
+*.kicad_pro text eol=lf
+*.kicad_prl text eol=lf
+*.sch text eol=lf
+*.pcb text eol=lf
+*.net text eol=lf
+*.cmp text eol=lf
+
+# Symbol and footprint libraries
+*.lib text eol=lf
+*.dcm text eol=lf
+*.kicad_sym text eol=lf
+*.kicad_mod text eol=lf
+
+# Project metadata
+*.pro text eol=lf
+*.wks text eol=lf
+*.bak text eol=lf
+
+# Prevent CRLF normalization for binary files
+*.png binary
+*.jpg binary
+*.gif binary
+*.pdf binary
+*.zip binary
+*.stp binary
+*.step binary
