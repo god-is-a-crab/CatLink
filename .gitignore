@@ -33,3 +33,6 @@ fp-info-cache
 
 # 3D model dir (if generated)
 3d/
+
+# Compilation artifacts
+target/
