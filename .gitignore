@@ -20,6 +20,7 @@ fp-info-cache
 *.gbl
 *.gbo
 *.gbp
+*.gbr
 *.gbs
 *.drl
 *.map
@@ -27,7 +28,6 @@ fp-info-cache
 *.rpt
 *.svg
 *.pdf
-*.zip
 *.step
 *.stp
 
@@ -36,3 +36,4 @@ fp-info-cache
 
 # Compilation artifacts
 target/
+firmware.asm
