@@ -11,15 +11,15 @@ use cortex_m::Peripherals as CorePeripherals;
 use cortex_m_rt::{entry, pre_init};
 use extract_gga::{calculate_sentence_length, is_gga};
 use static_fifo_queue::Queue;
-use stm32l4::stm32l4x2::{Interrupt, Peripherals as DevicePeripherals, interrupt};
+use stm32l4::stm32l412::{Interrupt, Peripherals as DevicePeripherals, interrupt};
 use sx126x::SyncSpiDescriptor;
 use sync_cell::{SyncCell, SyncUnsafeCell};
 
 // ==== Device configuration ====
 /// Device address
-const ADDRESS: u32 = 0x6310C;
+const ADDRESS: u32 = 0x605C2;
 /// Whitelisted gateway address
-const GATEWAY_ADDRESS: u32 = 0xD7B12;
+const GATEWAY_ADDRESS: u32 = 0x4543E;
 /// Wake-up interval in seconds
 const WAKEUP_INTERVAL: u16 = 20;
 /// Shutdown if divided battery voltage is lower than this.
@@ -158,7 +158,7 @@ impl TxPower {
     }
 }
 
-/// Initiates a sequence of SPI1 transfers over DMA1_CH2(RX) and DMA1_CH3(TX).
+/// Initiates a sequence of SPI1 transfers over DMA1_CHANNEL2(RX) and DMA1_CHANNEL3(TX).
 /// The sequence of commands starts with the command given to this function
 /// and continues with commands from [`COMMANDS`] until no commands remain.
 #[inline]
@@ -196,14 +196,14 @@ fn gnss_on(dp: &mut DevicePeripherals) {
     dp.USART1.cr1().write(|w| w.cmie().set_bit().ue().set_bit().re().set_bit().te().set_bit());
     dp.DMA1.ch5().ndtr().write(|w| w.ndt().set(NMEA_BUFFER.get().len() as u16));
     dp.DMA1.ch5().cr().write(|w| w.minc().set_bit().circ().set_bit().en().set_bit());
-    dp.GPIOB.bsrr().write(|w| w.bs0().set_bit());
+    dp.GPIOB.bsrr().write(|w| w.bs4().set_bit());
     dp.TIM6.cr1().write(|w| w.urs().counter_only().opm().set_bit().cen().set_bit());
 }
 
 /// Switch GNSS module OFF and stop receiving data
 #[inline]
 fn gnss_off(dp: &mut DevicePeripherals) {
-    dp.GPIOB.bsrr().write(|w| w.br0().set_bit());
+    dp.GPIOB.bsrr().write(|w| w.br4().set_bit());
     dp.DMA1.ch5().cr().write(|w| w.minc().set_bit().circ().set_bit().en().clear_bit());
     dp.USART1.cr1().write(|w| w.cmie().set_bit().ue().clear_bit().re().clear_bit());
 }
@@ -296,7 +296,7 @@ fn RTC_WKUP() {
     let cp = unsafe { CORE_PERIPHERALS.assume_init_mut() };
     let dp = unsafe { DEVICE_PERIPHERALS.assume_init_mut() };
 
-    dp.RTC.isr().write(|w| w.wutf().clear_bit());
+    dp.RTC.scr().write(|w| w.cwutf().set_bit());
     dp.EXTI.pr1().write(|w| w.pr20().clear_bit_by_one());
 
     unsafe {
@@ -359,11 +359,11 @@ fn ADC1_2() {
 
 /// DIO1 handler (rising edge). Handles TXDONE, RXDONE and CADDONE
 #[interrupt]
-fn EXTI4() {
+fn EXTI3() {
     let dp = unsafe { DEVICE_PERIPHERALS.assume_init_mut() };
     let commands = COMMANDS.get_mut();
 
-    dp.EXTI.pr1().write(|w| w.pr4().clear_bit_by_one());
+    dp.EXTI.pr1().write(|w| w.pr3().clear_bit_by_one());
 
     match STATE.0.get() {
         State::ScanAdCad(first) => {
@@ -417,7 +417,7 @@ fn EXTI15_10() {
     let dp = unsafe { DEVICE_PERIPHERALS.assume_init_mut() };
     let commands = COMMANDS.get_mut();
 
-    dp.EXTI.pr1().write(|w| w.pr12().clear_bit_by_one());
+    dp.EXTI.pr1().write(|w| w.pr15().clear_bit_by_one());
 
     // TIMEOUT
     match STATE.0.get() {
@@ -450,7 +450,7 @@ fn EXTI15_10() {
 
 /// SPI1 RX DMA TC interrupt - SX1268 command complete
 #[interrupt]
-fn DMA1_CH2() {
+fn DMA1_CHANNEL2() {
     let cp = unsafe { CORE_PERIPHERALS.assume_init_mut() };
     let dp = unsafe { DEVICE_PERIPHERALS.assume_init_mut() };
     let commands = COMMANDS.get_mut();
@@ -535,7 +535,7 @@ fn DMA1_CH2() {
 
 /// SPI1 TX DMA TC interrupt - Sent SX1268 command
 #[interrupt]
-fn DMA1_CH3() {
+fn DMA1_CHANNEL3() {
     let dp = unsafe { DEVICE_PERIPHERALS.assume_init_mut() };
 
     // Disable DMA Ch3
@@ -545,7 +545,7 @@ fn DMA1_CH3() {
 
 /// USART1(GNSS) TX DMA TC interrupt
 #[interrupt]
-fn DMA1_CH4() {
+fn DMA1_CHANNEL4() {
     let dp = unsafe { DEVICE_PERIPHERALS.assume_init_mut() };
 
     dp.DMA1.ch4().cr().write(|w| w.minc().set_bit().dir().from_memory().tcie().set_bit().en().clear_bit());
@@ -624,7 +624,7 @@ fn main() -> ! {
 
     // ==== GPIOA configuration ====
     // A0: ADC1 C5 | A2: VIN_DIV_EN
-    // A12: DIO3
+    // A15: DIO3
     // A4: NSS | A5: SCK | A6: MISO | A7: MOSI
     dp.GPIOA.moder().write(|w| {
         w.moder0()
@@ -639,7 +639,7 @@ fn main() -> ! {
             .alternate()
             .moder7()
             .alternate()
-            .moder12()
+            .moder15()
             .input()
     });
     dp.GPIOA.otyper().write(|w| w.ot2().open_drain());
@@ -648,9 +648,9 @@ fn main() -> ! {
     dp.GPIOA.afrl().write(|w| w.afrl4().af5().afrl5().af5().afrl6().af5().afrl7().af5());
 
     // ==== GPIOB configuration ====
-    // B4: DIO1
-    // B0: EN | B6: TX | B7: RX
-    dp.GPIOB.moder().write(|w| w.moder0().output().moder4().input().moder6().alternate().moder7().alternate());
+    // B3: DIO1
+    // B4: EN | B6: TX | B7: RX
+    dp.GPIOB.moder().write(|w| w.moder4().output().moder3().input().moder6().alternate().moder7().alternate());
     dp.GPIOB.otyper().write(|w| w.ot0().push_pull());
     dp.GPIOB.bsrr().write(|w| w.br0().set_bit());
     dp.GPIOB.afrl().write(|w| w.afrl6().af7().afrl7().af7());
@@ -695,9 +695,9 @@ fn main() -> ! {
     dp.ADC1.ier().write(|w| w.adrdyie().set_bit().eocie().set_bit());
 
     // ==== EXTI configuration ====
-    dp.SYSCFG.exticr2().write(|w| unsafe { w.exti4().bits(0b001) });
-    dp.EXTI.rtsr1().write(|w| w.tr4().set_bit().tr12().set_bit().tr20().set_bit());
-    dp.EXTI.imr1().write(|w| w.mr4().set_bit().mr12().set_bit().mr20().set_bit());
+    dp.SYSCFG.exticr1().write(|w| unsafe { w.exti3().bits(0b001) });
+    dp.EXTI.rtsr1().write(|w| w.tr3().set_bit().tr15().set_bit().tr20().set_bit());
+    dp.EXTI.imr1().write(|w| w.mr3().set_bit().mr15().set_bit().mr20().set_bit());
 
     // ==== PWR configuration ====
     unsafe {
@@ -715,17 +715,17 @@ fn main() -> ! {
     while dp.RCC.csr().read().lsirdy().bit_is_clear() {}
     dp.RCC.bdcr().write(|w| w.rtcsel().lsi().rtcen().set_bit());
     // Remove write protection from RTC registers
-    dp.RTC.wpr().write(|w| w.key().set(0xCA));
-    dp.RTC.wpr().write(|w| w.key().set(0x53));
+    dp.RTC.wpr().write(|w| w.key().deactivate1());
+    dp.RTC.wpr().write(|w| w.key().deactivate2());
     // Enter init mode to set prescaler values
-    dp.RTC.isr().write(|w| w.init().set_bit());
-    while dp.RTC.isr().read().initf().bit_is_clear() {}
+    dp.RTC.icsr().write(|w| w.init().set_bit());
+    while dp.RTC.icsr().read().initf().bit_is_clear() {}
     // AN4759 p.12 - calendar unit = 1 Hz
     dp.RTC.prer().write(|w| w.prediv_a().set(127).prediv_s().set(249));
-    dp.RTC.isr().write(|w| w.init().clear_bit());
+    dp.RTC.icsr().write(|w| w.init().clear_bit());
     // Turn off wake-up timer
     dp.RTC.cr().write(|w| w.wute().clear_bit());
-    while dp.RTC.isr().read().wutwf().bit_is_clear() {}
+    while dp.RTC.icsr().read().wutwf().bit_is_clear() {}
     // Write wake-up timer registers
     dp.RTC.wutr().write(|w| w.wut().set(WAKEUP_INTERVAL - 1));
 
@@ -749,13 +749,13 @@ fn main() -> ! {
         // Unmask NVIC global interrupts
         cortex_m::peripheral::NVIC::unmask(Interrupt::ADC1_2); // EOC, ADRDY
         cortex_m::peripheral::NVIC::unmask(Interrupt::TIM6_DACUNDER); // UIF - GNSS pre-init delay
-        cortex_m::peripheral::NVIC::unmask(Interrupt::DMA1_CH2); // TC - SPI1 RX
-        cortex_m::peripheral::NVIC::unmask(Interrupt::DMA1_CH3); // TC - SPI1 TX
+        cortex_m::peripheral::NVIC::unmask(Interrupt::DMA1_CHANNEL2); // TC - SPI1 RX
+        cortex_m::peripheral::NVIC::unmask(Interrupt::DMA1_CHANNEL3); // TC - SPI1 TX
         cortex_m::peripheral::NVIC::unmask(Interrupt::USART1); // CM
-        cortex_m::peripheral::NVIC::unmask(Interrupt::EXTI4); // DIO1 RT
+        cortex_m::peripheral::NVIC::unmask(Interrupt::EXTI3); // DIO1 RT
         cortex_m::peripheral::NVIC::unmask(Interrupt::EXTI15_10); // DIO3 RT
         cortex_m::peripheral::NVIC::unmask(Interrupt::RTC_WKUP); // WUTE
-        cortex_m::peripheral::NVIC::unmask(Interrupt::DMA1_CH4); // TC - USART1 TX
+        cortex_m::peripheral::NVIC::unmask(Interrupt::DMA1_CHANNEL4); // TC - USART1 TX
     }
 
     // Initialize SX1268
