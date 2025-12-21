@@ -5601,6 +5601,12 @@
 		(uuid "88064def-b0e7-4dc4-b5a0-cb2b8cd541ca")
 	)
 	(junction
+		(at 214.63 95.25)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "9099dec5-6a26-4902-bfec-fdfe7a8e9e50")
+	)
+	(junction
 		(at 107.95 30.48)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -5767,10 +5773,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "fab0bfc2-7772-44bf-a41f-37c33bac0679")
-	)
-	(no_connect
-		(at 195.58 137.16)
-		(uuid "19450620-7d3f-49d8-b705-36b2d8d8ba63")
 	)
 	(no_connect
 		(at 49.53 72.39)
@@ -6454,6 +6456,16 @@
 	)
 	(wire
 		(pts
+			(xy 229.87 134.62) (xy 232.41 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "493b074b-445d-460e-aec7-c6a693c2c7db")
+	)
+	(wire
+		(pts
 			(xy 153.67 148.59) (xy 180.34 148.59)
 		)
 		(stroke
@@ -6614,6 +6626,16 @@
 	)
 	(wire
 		(pts
+			(xy 219.71 110.49) (xy 219.71 124.46)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "56d4b03b-d1bd-4716-8623-aa9dabd29b19")
+	)
+	(wire
+		(pts
 			(xy 27.94 114.3) (xy 27.94 111.76)
 		)
 		(stroke
@@ -6691,6 +6713,16 @@
 			(type default)
 		)
 		(uuid "6375e739-808a-4ea7-a531-3df197a0c171")
+	)
+	(wire
+		(pts
+			(xy 232.41 139.7) (xy 229.87 139.7)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6486f6f8-6afb-4437-ab10-d8e55c96b942")
 	)
 	(wire
 		(pts
@@ -6901,6 +6933,16 @@
 			(type default)
 		)
 		(uuid "883d35bd-2e60-416e-8f20-be53aa7c1048")
+	)
+	(wire
+		(pts
+			(xy 219.71 124.46) (xy 195.58 124.46)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8ad8d7f9-21ca-4c9e-8bf4-83f6d2c76c20")
 	)
 	(wire
 		(pts
@@ -7444,6 +7486,16 @@
 	)
 	(wire
 		(pts
+			(xy 195.58 137.16) (xy 219.71 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e99c7399-db28-4450-887b-f0871cbac3c9")
+	)
+	(wire
+		(pts
 			(xy 172.72 52.07) (xy 171.45 52.07)
 		)
 		(stroke
@@ -7601,6 +7653,16 @@
 			(type default)
 		)
 		(uuid "f9db3e97-b413-4ff7-b17f-a1c65ae62f76")
+	)
+	(wire
+		(pts
+			(xy 214.63 95.25) (xy 219.71 95.25)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f9e3d669-8d3f-461a-8692-73dd1269fdaf")
 	)
 	(wire
 		(pts
@@ -7962,16 +8024,6 @@
 		)
 		(uuid "9418d6e9-0e2c-4b85-869a-68352d33a0d5")
 	)
-	(label "DIO3"
-		(at 195.58 124.46 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "9c70ef2f-94f2-4b75-a9a6-51fabe3fbc0e")
-	)
 	(label "~{STDBY}"
 		(at 54.61 124.46 180)
 		(effects
@@ -8241,6 +8293,16 @@
 			(justify right bottom)
 		)
 		(uuid "f94ed8f0-7901-4b37-8779-5b4f11770591")
+	)
+	(label "IO9"
+		(at 195.58 137.16 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fd7e0a0d-0a1e-4a7b-9784-a98abf10fdb0")
 	)
 	(label "SW_B"
 		(at 184.15 44.45 0)
@@ -9213,7 +9275,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "200"
+		(property "Value" "1k2"
 			(at 19.05 119.3799 0)
 			(effects
 				(font
@@ -9222,7 +9284,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 14.732 118.11 90)
 			(effects
 				(font
@@ -9804,6 +9866,154 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:LED")
+		(at 219.71 99.06 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "3b98809f-ede0-4dd6-bda7-b4ebafa2a065")
+		(property "Reference" "D8"
+			(at 223.52 99.3774 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "RED"
+			(at 223.52 101.9174 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "LED_SMD:LED_0805_2012Metric"
+			(at 219.71 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 219.71 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Light emitting diode"
+			(at 219.71 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" "1=K 2=A"
+			(at 219.71 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "43fe0763-f6ec-487d-a5b4-b79874c5ce13")
+		)
+		(pin "1"
+			(uuid "780f5f6f-e505-4b50-bf78-44d9a802549e")
+		)
+		(instances
+			(project "catlink-gateway-pcb-eval"
+				(path "/94292d62-45c4-49e7-91f1-3f204424d3a2"
+					(reference "D8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 232.41 130.81 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "444a5651-18f9-414e-8839-ac0c846ae510")
+		(property "Reference" "R22"
+			(at 233.68 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 233.68 132.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 230.632 130.81 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 232.41 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 232.41 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "991af200-d5dd-4377-bdd9-c8c8c1d1a5d1")
+		)
+		(pin "2"
+			(uuid "502218f1-8117-4a6a-b7f9-3c03e27a0ee5")
+		)
+		(instances
+			(project "catlink-gateway-pcb-eval"
+				(path "/94292d62-45c4-49e7-91f1-3f204424d3a2"
+					(reference "R22")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+3V0")
 		(at 247.65 72.39 0)
 		(unit 1)
@@ -10003,6 +10213,77 @@
 			(project ""
 				(path "/94292d62-45c4-49e7-91f1-3f204424d3a2"
 					(reference "C1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Switch:SW_SPDT")
+		(at 224.79 137.16 0)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "57bcfbfe-0368-4a4a-928b-67c9e6f42980")
+		(property "Reference" "SW2"
+			(at 224.79 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SW_SPDT"
+			(at 224.79 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Button_Switch_THT:SW_Slide_SPDT_Angled_CK_OS102011MA1Q"
+			(at 224.79 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 224.79 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Switch, single pole double throw"
+			(at 224.79 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "10cb9b2d-67d3-4576-bc4b-c075a004e7b1")
+		)
+		(pin "1"
+			(uuid "ecd872ea-737c-430f-ac80-cfc427ab9ecc")
+		)
+		(pin "2"
+			(uuid "5b2fd835-075a-4f7c-a4a3-b9528dba3946")
+		)
+		(instances
+			(project "catlink-gateway-pcb-eval"
+				(path "/94292d62-45c4-49e7-91f1-3f204424d3a2"
+					(reference "SW2")
 					(unit 1)
 				)
 			)
@@ -10479,6 +10760,75 @@
 			(project "catlink-gateway-pcb"
 				(path "/94292d62-45c4-49e7-91f1-3f204424d3a2"
 					(reference "C3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 232.41 143.51 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "70c2748d-9f67-43ff-b20f-2335755f65e5")
+		(property "Reference" "R23"
+			(at 233.68 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 233.68 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 230.632 143.51 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 232.41 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 232.41 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "600d6bf5-61a3-4de6-9e28-37ede81a0dd5")
+		)
+		(pin "2"
+			(uuid "f0229799-351e-4017-94b7-2c278cdec36c")
+		)
+		(instances
+			(project "catlink-gateway-pcb-eval"
+				(path "/94292d62-45c4-49e7-91f1-3f204424d3a2"
+					(reference "R23")
 					(unit 1)
 				)
 			)
@@ -11028,6 +11378,72 @@
 			(project "catlink-gateway-pcb"
 				(path "/94292d62-45c4-49e7-91f1-3f204424d3a2"
 					(reference "D2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V0")
+		(at 232.41 127 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7e3140be-599a-495a-a0fc-21706e20093a")
+		(property "Reference" "#PWR015"
+			(at 232.41 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V0"
+			(at 232.41 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 232.41 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 232.41 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V0\""
+			(at 232.41 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d1f61140-eb26-4525-b680-235c9ad5d450")
+		)
+		(instances
+			(project "catlink-gateway-pcb-eval"
+				(path "/94292d62-45c4-49e7-91f1-3f204424d3a2"
+					(reference "#PWR015")
 					(unit 1)
 				)
 			)
@@ -11602,7 +12018,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "200"
+		(property "Value" "1k2"
 			(at 257.81 53.3399 0)
 			(effects
 				(font
@@ -11611,7 +12027,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 253.492 52.07 90)
 			(effects
 				(font
@@ -11781,6 +12197,73 @@
 			(project "catlink-gateway-pcb"
 				(path "/94292d62-45c4-49e7-91f1-3f204424d3a2"
 					(reference "#PWR08")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 232.41 147.32 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b837890e-e513-4495-ac1d-0bdd149cb76b")
+		(property "Reference" "#PWR012"
+			(at 232.41 153.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 232.41 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 232.41 147.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 232.41 147.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 232.41 147.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e1ba53b4-c079-45fa-8667-eb468f38abf0")
+		)
+		(instances
+			(project "catlink-gateway-pcb-eval"
+				(path "/94292d62-45c4-49e7-91f1-3f204424d3a2"
+					(reference "#PWR012")
 					(unit 1)
 				)
 			)
@@ -11984,7 +12467,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "300"
+		(property "Value" "1k2"
 			(at 30.48 119.3799 0)
 			(effects
 				(font
@@ -11993,7 +12476,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 26.162 118.11 90)
 			(effects
 				(font
@@ -12930,6 +13413,75 @@
 			(project "catlink-gateway-pcb"
 				(path "/94292d62-45c4-49e7-91f1-3f204424d3a2"
 					(reference "#PWR03")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 219.71 106.68 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "f31027ef-654b-4475-8781-a9aef5441c5c")
+		(property "Reference" "R21"
+			(at 222.25 105.4099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1k2"
+			(at 222.25 107.9499 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 217.932 106.68 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 219.71 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 219.71 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "a1a77248-fc36-43cb-9d7e-5152609a6d9c")
+		)
+		(pin "2"
+			(uuid "a2137181-02e2-4692-be40-961159b9737b")
+		)
+		(instances
+			(project "catlink-gateway-pcb-eval"
+				(path "/94292d62-45c4-49e7-91f1-3f204424d3a2"
+					(reference "R21")
 					(unit 1)
 				)
 			)
