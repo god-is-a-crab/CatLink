@@ -7,7 +7,7 @@
 	(title_block
 		(title "CatLink Gateway")
 		(date "2025-09-13")
-		(rev "v0.1")
+		(rev "v0.2")
 	)
 	(lib_symbols
 		(symbol "Battery_Management:TP4056-42-ESOP8"
