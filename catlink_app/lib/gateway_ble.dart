@@ -21,6 +21,7 @@ enum LinkCtrlState {
 
 const int disconnectSnr = -0x8000000000000000;
 const int unknownBattery = -1;
+const int bleDelay = 400;
 
 class GatewayBle with WidgetsBindingObserver {
   // Singleton
@@ -189,11 +190,13 @@ class GatewayBle with WidgetsBindingObserver {
                             deviceId: device.id,
                           );
 
+                          await Future.delayed(Duration(milliseconds: bleDelay));
                           if (!await _subscribeToTrackerUpdate()) {
                             await disconnect();
                             completer.complete(false);
                             return;
                           }
+                          await Future.delayed(Duration(milliseconds: bleDelay));
                           if (!await _subscribeToLinkCtrl()) {
                             await disconnect();
                             completer.complete(false);
@@ -225,9 +228,7 @@ class GatewayBle with WidgetsBindingObserver {
                           break;
 
                         case DeviceConnectionState.disconnected:
-                          // TODO: test losing connection
                           await disconnect();
-                          // TODO: restart scan
                           break;
 
                         default:
@@ -331,8 +332,12 @@ class GatewayBle with WidgetsBindingObserver {
     logger.i("Disconnecting from gateway");
     await _trackerUpdateIndicate?.cancel();
     _trackerUpdateIndicate = null;
+
+    await Future.delayed(Duration(milliseconds: bleDelay));
     await _linkCtrlIndicate?.cancel();
     _linkCtrlIndicate = null;
+
+    await Future.delayed(Duration(milliseconds: bleDelay));
     await _gatewayConnStreamSub?.cancel();
     _gatewayConnStreamSub = null;
     _linkCtrlChar = null;

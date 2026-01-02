@@ -177,6 +177,16 @@ bool no_connections() {
     ESP_LOGI(GAP_TAG, "No active connections");
     return true;
 }
+bool no_subscriptions() {
+    for (int i = 0; i < MAX_CONNECTIONS; i++) {
+        if (connections[i].conn_handle_inited && connections[i].subscribed_chars != 0) {
+            ESP_LOGI(GAP_TAG, "Active subscription in slot %d subscriptions: %d", i, connections[i].subscribed_chars);
+            return false;
+        }
+    }
+    ESP_LOGI(GAP_TAG, "No active subscriptions");
+    return true;
+}
 
 bool is_connection_encrypted(uint16_t conn_handle) {
     struct ble_gap_conn_desc desc;
@@ -327,6 +337,13 @@ int gatt_svr_subscribe_cb(struct ble_gap_event *event) {
     } else {
         unsubscribe_connection(event->subscribe.conn_handle, char_sub_flag);
     }
+    if ((link_ctrl_val == CTRL_SCAN || link_ctrl_val == CTRL_CONNECTED) && no_subscriptions()) {
+        xSemaphoreTake(link_ctrl_mutex, portMAX_DELAY);
+        link_ctrl_val = CTRL_DISCONNECT;
+        xSemaphoreGive(link_ctrl_mutex);
+        xTaskNotify(tracker_update_task_handle, DISCONNECT, eSetBits);
+        send_link_ctrl_indication();
+    }
     return 0;
 }
 
@@ -383,13 +400,6 @@ static int gap_event_handler(struct ble_gap_event *event, void *arg) {
     case BLE_GAP_EVENT_DISCONNECT:
         /* A connection was terminated */
         remove_connection(event->disconnect.conn.conn_handle);
-        if ((link_ctrl_val == CTRL_SCAN || link_ctrl_val == CTRL_CONNECTED) && no_connections()) {
-            xSemaphoreTake(link_ctrl_mutex, portMAX_DELAY);
-            link_ctrl_val = CTRL_DISCONNECT;
-            xSemaphoreGive(link_ctrl_mutex);
-            xTaskNotify(tracker_update_task_handle, DISCONNECT, eSetBits);
-            send_link_ctrl_indication();
-        }
         ESP_LOGI(GAP_TAG, "disconnected from peer; handle=%d reason=%d", event->disconnect.conn.conn_handle, event->disconnect.reason);
 
         /* Restart advertising */
