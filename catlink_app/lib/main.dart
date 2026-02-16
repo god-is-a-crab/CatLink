@@ -516,7 +516,7 @@ class _MapPageState extends State<_MapPage> {
                           children: [
                             Icon(icon, size: 20.0),
                             SizedBox(
-                              width: 18.0,
+                              width: 22.0,
                               child: Text(
                                 dividedVoltage == unknownBattery
                                     ? ''
