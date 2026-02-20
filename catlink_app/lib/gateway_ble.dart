@@ -5,6 +5,14 @@ import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'logger.dart';
 
+class ForceNotifier<T> extends ValueNotifier<T> {
+  ForceNotifier(super.value);
+
+  void forceNotify() {
+    notifyListeners();
+  }
+}
+
 enum GatewayConnState { disconnected, scanning, connected }
 
 enum LinkCtrlState {
@@ -76,7 +84,7 @@ class GatewayBle with WidgetsBindingObserver {
       _trackerPosition;
 
   // Tracker LoRa SNR
-  final _trackerSnr = ValueNotifier<int>(disconnectSnr);
+  final _trackerSnr = ForceNotifier<int>(disconnectSnr);
   ValueListenable<int> get trackerSnr => _trackerSnr;
 
   // Tracker battery divided voltage
@@ -190,13 +198,17 @@ class GatewayBle with WidgetsBindingObserver {
                             deviceId: device.id,
                           );
 
-                          await Future.delayed(Duration(milliseconds: bleDelay));
+                          await Future.delayed(
+                            Duration(milliseconds: bleDelay),
+                          );
                           if (!await _subscribeToTrackerUpdate()) {
                             await disconnect();
                             completer.complete(false);
                             return;
                           }
-                          await Future.delayed(Duration(milliseconds: bleDelay));
+                          await Future.delayed(
+                            Duration(milliseconds: bleDelay),
+                          );
                           if (!await _subscribeToLinkCtrl()) {
                             await disconnect();
                             completer.complete(false);
@@ -278,6 +290,7 @@ class GatewayBle with WidgetsBindingObserver {
             (data) {
               _trackerPosition.value = _extractPositionFromTrackerUpdate(data);
               _trackerSnr.value = data[12];
+              _trackerSnr.forceNotify();
               if (data[0] & (1 << 0) != 0) {
                 _trackerBattery.value = data[1];
               }

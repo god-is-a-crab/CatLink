@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'dart:math';
 import 'package:synchronized/synchronized.dart';
@@ -265,6 +266,86 @@ class _LinkCtrlButtonState extends State<LinkCtrlButton> {
   }
 }
 
+enum HeartbeatState { disconnected, beating, finishedBeating, connected }
+
+class TrackerHeartbeat extends StatefulWidget {
+  final ValueListenable<int> trackerSnr;
+
+  const TrackerHeartbeat({super.key, required this.trackerSnr});
+
+  @override
+  State<TrackerHeartbeat> createState() => _TrackerHeartbeatState();
+}
+
+class _TrackerHeartbeatState extends State<TrackerHeartbeat>
+    with TickerProviderStateMixin {
+  Timer? _heartbeatTimer;
+  HeartbeatState _heartbeatState = HeartbeatState.disconnected;
+  late AnimationController _scaleController;
+  late Animation<double> _scale;
+
+  @override
+  void initState() {
+    super.initState();
+    _scaleController = AnimationController(
+      duration: const Duration(milliseconds: 2000),
+      vsync: this,
+    );
+    _scale = Tween<double>(begin: 1.0, end: 2.0).animate(
+      CurvedAnimation(parent: _scaleController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<int>(
+      valueListenable: widget.trackerSnr,
+      builder: (context, snr, _) {
+        if (_heartbeatState == HeartbeatState.finishedBeating) {
+          _heartbeatState = HeartbeatState.connected;
+        } else if (snr != disconnectSnr) {
+          _heartbeatTimer?.cancel();
+          _heartbeatState = HeartbeatState.beating;
+          if (!_scaleController.isAnimating) {
+            _scaleController.forward().then((_) => _scaleController.reverse());
+          }
+          _heartbeatTimer = Timer(const Duration(seconds: 1), () {
+            if (mounted) {
+              setState(() {
+                _heartbeatState = HeartbeatState.finishedBeating;
+              });
+            }
+          });
+        } else if (snr == disconnectSnr) {
+          _heartbeatTimer?.cancel();
+          _scaleController.stop();
+          _scaleController.reset();
+          _heartbeatState = HeartbeatState.disconnected;
+        }
+
+        final color = switch (_heartbeatState) {
+          HeartbeatState.beating => Colors.blue,
+          HeartbeatState.finishedBeating ||
+          HeartbeatState.connected => Colors.green,
+          HeartbeatState.disconnected => Colors.red,
+        };
+
+        return ScaleTransition(
+          scale: _scale,
+          child: Icon(Icons.favorite, color: color, size: 16.0),
+        );
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _scaleController.dispose();
+    _heartbeatTimer?.cancel();
+    super.dispose();
+  }
+}
+
 class _MapPage extends StatefulWidget {
   const _MapPage();
 
@@ -430,7 +511,7 @@ class _MapPageState extends State<_MapPage> {
                           children: [
                             Icon(icon, size: 20.0),
                             SizedBox(
-                              width: 18.0,
+                              width: 22.0,
                               child: Text(
                                 batteryLevel == unknownBattery
                                     ? ''
@@ -459,6 +540,8 @@ class _MapPageState extends State<_MapPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Text('Tracker', style: TextStyle(fontSize: 12.0)),
+                    const SizedBox(width: 8.0),
+                    TrackerHeartbeat(trackerSnr: _gatewayBle.trackerSnr),
                     const SizedBox(width: 8.0),
                     ValueListenableBuilder<int>(
                       valueListenable: _gatewayBle.trackerSnr,
