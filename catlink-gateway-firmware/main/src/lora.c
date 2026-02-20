@@ -418,8 +418,8 @@ static void tracker_update_task(void *param) {
                     const uint8_t pid = (read_buffer_rx_data[READ_BUF_ADDR_B0] >> 2) & 3;
                     const uint8_t flags = read_buffer_rx_data[READ_BUF_ADDR_B0] & 3;
 
-                    const int8_t snr = (int8_t)txn_get_packet_status.rx_data[PKT_STATUS_SNR] / 4;
-                    const int8_t signal_rssi = -(int8_t)txn_get_packet_status.rx_data[PKT_STATUS_SIGNAL_RSSI] / 2;
+                    const int8_t snr = ((int8_t)txn_get_packet_status.rx_data[PKT_STATUS_SNR]) / 4;
+                    const int8_t signal_rssi = (int8_t)(-(int16_t)txn_get_packet_status.rx_data[PKT_STATUS_SIGNAL_RSSI] / 2);
 
                     xSemaphoreTake(tracker_update_mutex, portMAX_DELAY);
                     tracker_update_chr_val[BLOCK_FLAGS_OFFSET] = flags;

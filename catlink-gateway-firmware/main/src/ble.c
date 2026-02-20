@@ -803,15 +803,18 @@ static void get_vbat_voltage(void) {
     int voltage_mv;
     adc_cali_raw_to_voltage(adc1_cali_handle, raw, &voltage_mv);
 
+    // Apply voltage divider ratio (R1=390k, R2=100k): VBAT = VADC × (R1+R2)/R2
+    int vbat_mv = voltage_mv * 490 / 100;
+
     // Get offset from 3300 mV, battery range is 3300 mV to 4100mV
     // Heltec WSL uses CE6260B33M which has 3.3V output - minimum voltage is around 3.4V
-    int voltage_offset_3300 = voltage_mv - 3300;
+    int voltage_offset_3300 = vbat_mv - 3300;
     // Clamp to 0-800
     voltage_offset_3300 = voltage_offset_3300 < 0   ? 0 : voltage_offset_3300;
     voltage_offset_3300 = voltage_offset_3300 > 800 ? 800 : voltage_offset_3300;
     battery_level_chr_val = voltage_offset_3300 / 8;
 
-    ESP_LOGI("ADC", "VBat voltage: %d mV, level: %d", voltage_mv, battery_level_chr_val);
+    ESP_LOGI("ADC", "ADC: %d, VBat: %d mV, level: %d", voltage_mv, vbat_mv, battery_level_chr_val);
     gpio_set_level(GPIO_NUM_ADC_CTRL, 1);
 }
 
