@@ -337,12 +337,14 @@ int gatt_svr_subscribe_cb(struct ble_gap_event *event) {
     } else {
         unsubscribe_connection(event->subscribe.conn_handle, char_sub_flag);
     }
+    xSemaphoreTake(link_ctrl_mutex, portMAX_DELAY);
     if ((link_ctrl_val == CTRL_SCAN || link_ctrl_val == CTRL_CONNECTED) && no_subscriptions()) {
-        xSemaphoreTake(link_ctrl_mutex, portMAX_DELAY);
         link_ctrl_val = CTRL_DISCONNECT;
         xSemaphoreGive(link_ctrl_mutex);
         xTaskNotify(tracker_update_task_handle, DISCONNECT, eSetBits);
         send_link_ctrl_indication();
+    } else {
+        xSemaphoreGive(link_ctrl_mutex);
     }
     return 0;
 }
