@@ -37,3 +37,5 @@ fp-info-cache
 # Compilation artifacts
 target/
 firmware.asm
+
+*.FCBak
