@@ -21,7 +21,7 @@ const ADDRESS: u32 = 0x2BE45;
 /// Whitelisted gateway address
 const GATEWAY_ADDRESS: u32 = 0x0D121;
 /// Wake-up interval in seconds
-const WAKEUP_INTERVAL: u16 = 20;
+const WAKEUP_INTERVAL: u16 = 40;
 /// Shutdown if divided battery voltage is lower than this.
 /// Divider ratio = 0.5, Vref = 3V
 const LOW_BATTERY_THRESHOLD: u8 = 0x81; // 0x81/0xFF * 3 * 2 = 3.04V

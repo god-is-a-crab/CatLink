@@ -3,7 +3,7 @@
 
 #include "freertos/FreeRTOS.h"
 
-#define GATEWAY_ADDRESS     0xD7B12UL
+#define GATEWAY_ADDRESS     0x0D121UL
 
 // Notification flags
 #define DIO1_SET            (1 << 0)
