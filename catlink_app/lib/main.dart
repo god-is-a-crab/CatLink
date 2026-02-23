@@ -548,8 +548,8 @@ class _MapPageState extends State<_MapPage> {
                       builder: (context, snr, _) {
                         final icon = switch (snr) {
                           == disconnectSnr => Icons.signal_cellular_off,
-                          < -5 => Icons.signal_cellular_alt_1_bar,
-                          < 1 => Icons.signal_cellular_alt_2_bar,
+                          < 5 => Icons.signal_cellular_alt_1_bar,
+                          < 8 => Icons.signal_cellular_alt_2_bar,
                           _ => Icons.signal_cellular_alt,
                         };
                         return Row(
