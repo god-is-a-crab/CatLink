@@ -289,7 +289,7 @@ class GatewayBle with WidgetsBindingObserver {
           .listen(
             (data) {
               _trackerPosition.value = _extractPositionFromTrackerUpdate(data);
-              _trackerSnr.value = data[12];
+              _trackerSnr.value = data[12] >= 128 ? data[12] - 256 : data[12];
               _trackerSnr.forceNotify();
               if (data[0] & (1 << 0) != 0) {
                 _trackerBattery.value = data[1];
